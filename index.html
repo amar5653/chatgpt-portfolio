@@ -3,36 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Name - Portfolio</title>
+    <title>Amarpreet - Portfolio</title>
     <style>
+        /* Your CSS Styles Here */
         body {
             font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+            background-color: #f8f8f8;
+            background-image: url('https://www.transparenttextures.com/patterns/dust.png'); /* Background pattern */
         }
 
         header {
-            background-color: #333;
+            background-color: #3498db;
             color: #fff;
             padding: 20px;
             text-align: center;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        nav {
+            text-align: center;
+            margin: 20px 0;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #fff;
+            margin: 0 15px;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #e74c3c;
+            transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+        }
+
+        nav a:hover {
+            background-color: #c0392b;
+            transform: scale(1.1);
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            animation: fadeIn 1s ease-in-out;
         }
 
         section {
+            background-color: #fff;
             padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 1s ease-in-out;
         }
 
-        h1, h2 {
-            color: #333;
+        h1, h2, h3 {
+            color: #3498db;
         }
 
         .project {
-            margin-bottom: 20px;
             padding: 15px;
             border: 1px solid #ccc;
             border-radius: 5px;
-            background-color: #fff;
+            background-color: #ecf0f1;
+            transition: transform 0.3s ease-in-out;
+            position: relative;
+        }
+
+        .project img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .project:hover {
+            transform: scale(1.05);
+        }
+
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .lightbox img {
+            max-width: 80%;
+            max-height: 80%;
         }
 
         footer {
@@ -43,37 +109,153 @@
             position: fixed;
             bottom: 0;
             width: 100%;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (min-width: 768px) {
+            .container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .container {
+                grid-template-columns: repeat(3, 1fr);
+            }
         }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>Your Name</h1>
+        <h1>Amarpreet Kaur Gill</h1>
         <p>Web Developer</p>
     </header>
 
-    <section>
-        <h2>About Me</h2>
-        <p>Write a brief introduction about yourself here.</p>
-    </section>
+    <nav>
+        <a href="#about">About Me</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+    </nav>
 
-    <section>
-        <h2>Projects</h2>
-        <div class="project">
-            <h3>Project 1</h3>
-            <p>Description of Project 1.</p>
-        </div>
+    <div class="container">
 
-        <div class="project">
-            <h3>Project 2</h3>
-            <p>Description of Project 2.</p>
-        </div>
-    </section>
+        <section id="about">
+            <h2>About Me</h2>
+            <p>Write a brief introduction about yourself here.</p>
+        </section>
+
+        <section id="projects">
+            <h2>Projects</h2>
+            <div class="project" onclick="openLightbox('image1.jpg')">
+                <img src="image1.jpg" alt="Project 1">
+                <h3>Project 1</h3>
+                <p>Description of Project 1.</p>
+            </div>
+
+            <div class="project" onclick="openLightbox('image2.jpg')">
+                <img src="image2.jpg" alt="Project 2">
+                <h3>Project 2</h3>
+                <p>Description of Project 2.</p>
+            </div>
+        </section>
+
+        <section id="contact">
+            <h2>Contact</h2>
+            <p>Email: your@email.com</p>
+        </section>
+
+    </div>
 
     <footer>
-        <p>Contact: your@email.com | Portfolio: yourportfolio.com</p>
+        <p id="currentYear"></p>
     </footer>
 
+    <button id="scrollToTopBtn" title="Go to Top">Top</button>
+
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+        <img id="lightboxImg" src="" alt="Project Lightbox">
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Set current year in the footer dynamically
+            const currentYearElement = document.getElementById('currentYear');
+            const currentYear = new Date().getFullYear();
+            currentYearElement.textContent = `&copy; ${currentYear} Your Name. All rights reserved.`;
+
+            // Responsive navigation toggle
+            const nav = document.querySelector('nav');
+            const navLinks = document.querySelectorAll('nav a');
+
+            document.querySelector('header').addEventListener('click', () => {
+                nav.classList.toggle('nav-open');
+            });
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    nav.classList.remove('nav-open');
+                });
+            });
+
+            // Scroll-to-top button
+            const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+
+            window.onscroll = function () {
+                if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                    scrollToTopBtn.style.display = 'block';
+                } else {
+                    scrollToTopBtn.style.display = 'none';
+                }
+            };
+
+            scrollToTopBtn.addEventListener('click', () => {
+                document.body.scrollTop = 0;
+                document.documentElement.scrollTop = 0;
+            });
+        });
+
+        // Lightbox functions
+        function openLightbox(imageSrc) {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightboxImg');
+            lightboxImg.src = imageSrc;
+            lightbox.style.display
+            .display = 'flex';
+        }
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.style.display = 'none';
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+
+                window.scrollTo({
+                    top: targetElement.offsetTop - 20,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
 </body>
 </html>
+
